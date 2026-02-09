@@ -61,10 +61,10 @@ public class AutomationTask extends ReusableUtility {
         minimizeMyraBot();
         
         logger.info("Step 5 : Search city...");
-        clickAndSearchCity(driver, "Mumbai");
+        clickAndSearchCity(driver, "Kurnool");
         
         logger.info("Step 6 : Select City...");
-        selectMainCity(driver, wait, js, "Mumbai","City in Maharashtra");
+        selectMainCity(driver, wait, js, "Kurnool","City in Andhra Pradesh");
         
         logger.info("Step 7 : Close calender...");
         closeCalendarUsingESC();
@@ -73,13 +73,13 @@ public class AutomationTask extends ReusableUtility {
         clickSearch();
 
         logger.info("Step 9 : Fetching total number of available buses...");
-        GetTotalNumberofHotels(wait,"Mumbai");
+        GetTotalNumberofHotels(wait,"Kurnool");
         
         logger.info("Step 10 : Getting names of all available Hotels...");
         GetAllHotelNames(driver, wait, js);
     	}
     	catch (Exception e) {
-            captureScreenshot("Failure_During_Execution");
+            captureScreenshot(driver,"Failure_During_Execution");
             logger.error("Test Failed! Screenshot captured.");
             throw e; 
         }

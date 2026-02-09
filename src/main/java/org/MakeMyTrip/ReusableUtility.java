@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.util.FileUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
@@ -17,6 +18,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import com.google.common.io.Files;
 
 public class ReusableUtility 
 {
@@ -36,13 +39,13 @@ public class ReusableUtility
             if (isDisplayed) {
                 ClickcrossIcon.click();
                 logger.info("Pop up found and  closed");
-                captureScreenshot("Pop up found and  closed");
+                captureScreenshot(driver,"Pop up found and  closed");
             } else {
             	logger.info("Pop up not found");
-            	captureScreenshot("Pop up not found");
+            	captureScreenshot(driver,"Pop up not found");
             }
         } catch (TimeoutException e) {
-        	captureScreenshot("Popup_Not_Found");
+        	captureScreenshot(driver,"Popup_Not_Found");
         	logger.info("Pop up not shown the screen!!!");
         }
     }
@@ -56,13 +59,13 @@ public class ReusableUtility
                 WebElement minimizeBtn = wait.until(ExpectedConditions.elementToBeClickable(minimizeLocator));
                 minimizeBtn.click();
                 logger.info("Myra Bot found and minimized.");
-                captureScreenshot("Myra Bot found and minimized.");
+                captureScreenshot(driver,"Myra Bot found and minimized.");
             } else {
                 logger.info("Myra Bot not found on this page, skipping.");
-                captureScreenshot("Myra Bot not found on this page, skipping.");
+                captureScreenshot(driver,"Myra Bot not found on this page, skipping.");
             }
         } catch (Exception e) {
-        	captureScreenshot("Popup_Not_Found");
+        	captureScreenshot(driver,"Popup_Not_Found");
             logger.info("Myra Bot appeared but could not be clicked: " + e.getMessage());
         }
     }
@@ -70,7 +73,7 @@ public class ReusableUtility
     public static void clickMenuHotel()
     {
     	logger.info("Click Hotel Menu");
-    	captureScreenshot("Click Hotel Menu");
+    	captureScreenshot(driver,"Click Hotel Menu");
     	String MenuHotelButtonLocator = "//li[@class=\"menu_Hotels\"]";
     	By MenuHotel = By.xpath(MenuHotelButtonLocator);
     	WebElement HotelMenuButton = wait.until(ExpectedConditions.elementToBeClickable(MenuHotel));
@@ -121,13 +124,13 @@ public class ReusableUtility
 
                     js.executeScript("arguments[0].scrollIntoView(true);", row);
                     js.executeScript("arguments[0].click();", row);
-                    captureScreenshot("Selected main Mumbai city");
+                    captureScreenshot(driver,"Selected main Mumbai city");
                     logger.info("Selected main Mumbai city");
                     return;
                 }
 
             } catch (NoSuchElementException e) {
-            	 captureScreenshot("Skipping invalid autosuggestion row");
+            	 captureScreenshot(driver,"Skipping invalid autosuggestion row");
                 logger.warn("Skipping invalid autosuggestion row");
             }
         }
@@ -143,7 +146,7 @@ public class ReusableUtility
             js.executeScript("arguments[0].click();", searchBtn);
         } 
         catch (Exception e) {
-        	 captureScreenshot("Search button click failed");
+        	 captureScreenshot(driver,"Search button click failed");
             throw new RuntimeException("Search button click failed");
         }
     }
@@ -159,10 +162,10 @@ public class ReusableUtility
 
             wait.until(ExpectedConditions.invisibilityOfElementLocated(calendar));
             logger.info("Calendar closed by clicking Hotels header");
-            captureScreenshot("Calendar not visible");
+            captureScreenshot(driver,"Calendar not visible");
 
         } catch (TimeoutException e) {
-        	captureScreenshot("Calendar not visible");
+        	captureScreenshot(driver,"Calendar not visible");
         	logger.info("Calendar not visible");
         }
     }
@@ -174,9 +177,9 @@ public class ReusableUtility
                     .sendKeys(Keys.ESCAPE)
                     .perform();
             logger.info("Calendar closed using ESC");
-            captureScreenshot("Calendar not open");
+            captureScreenshot(driver,"Calendar not open");
         } catch (Exception e) {
-        	captureScreenshot("Calendar not open");
+        	captureScreenshot(driver,"Calendar not open");
         	logger.info("Calendar not open");
         }
     }
@@ -191,17 +194,17 @@ public class ReusableUtility
             logger.info("Subtitle Text: " + text);
 
             if (text.toLowerCase().contains(city)) {
-            	captureScreenshot("Total Hotels Found:");
+            	captureScreenshot(driver,"Total Hotels Found:");
                 logger.info("Total Hotels Found: " + text);
             } else {
-            	captureScreenshot("Unexpected subtitle text");
+            	captureScreenshot(driver,"Unexpected subtitle text");
                 logger.warn("Unexpected subtitle text: " + text);
             }
         } catch (TimeoutException e) {
-        	captureScreenshot("Timeout while waiting for subtitle text about Hotels");
+        	captureScreenshot(driver,"Timeout while waiting for subtitle text about Hotels");
             logger.error("Timeout while waiting for subtitle text about Hotels.", e);
         } catch (Exception e) {
-        	captureScreenshot("Unexpected error occurred in GetTotalNumberofHotels()");
+        	captureScreenshot(driver,"Unexpected error occurred in GetTotalNumberofHotels()");
             logger.error("Unexpected error occurred in GetTotalNumberofHotels()", e);
         }
     }
@@ -219,13 +222,13 @@ public class ReusableUtility
 
                 // End-of-list check
                 if (!wd.findElements(endOfListLocator).isEmpty()) {
-                	captureScreenshot("Reached end of hotel list");
+                	captureScreenshot(driver,"Reached end of hotel list");
                 	logger.info("Reached end of hotel list");
                     break;
                 }
 
                 if (currentList.size() < 3) {
-                	captureScreenshot("Not enough hotel cards to scroll further");
+                	captureScreenshot(driver,"Not enough hotel cards to scroll further");
                     logger.warn("Not enough hotel cards to scroll further");
                     break;
                 }
@@ -258,31 +261,39 @@ public class ReusableUtility
 
         } catch (TimeoutException e) {
             logger.error("Timed out while loading hotel listings", e);
-            captureScreenshot("Failure_During_Hotel list did not load in time");
+            captureScreenshot(driver,"Failure_During_Hotel list did not load in time");
             throw new RuntimeException("Hotel list did not load in time", e);
 
         } catch (InterruptedException e) {
             logger.error("Thread interrupted during scrolling", e);
-            captureScreenshot("Failure_During_scrolling");
+            captureScreenshot(driver,"Failure_During_scrolling");
             Thread.currentThread().interrupt();
 
         } catch (Exception e) {
             logger.error("Unexpected error while fetching hotel names", e);
-            captureScreenshot("Failure_During_scrolling");
+            captureScreenshot(driver,"Failure_During_scrolling");
             throw new RuntimeException("Failed to fetch hotel names", e);
         }
     }
 
-    public static void captureScreenshot(String testName) {
+    public static void captureScreenshot(WebDriver driver, String screenshotName) {
         try {
+            // 1. Define the directory path
+            File directory = new File("./Screenshots/");
+            
+            // 2. Check if it exists, if not, create it
+            if (!directory.exists()) {
+                directory.mkdirs(); 
+            }
+
+            // 3. Proceed with capturing the screenshot
             TakesScreenshot ts = (TakesScreenshot) driver;
             File source = ts.getScreenshotAs(OutputType.FILE);
-            String timestamp = new java.text.SimpleDateFormat("yyyyMMdd_HHmmss").format(new java.util.Date());
-            File destination = new File("./Screenshots/" + testName + "_" + timestamp + ".png");
-            com.google.common.io.Files.copy(source, destination);
-            logger.info("Screenshot captured: " + destination.getName());
+            File destination = new File(directory, screenshotName + ".png");
+            Files.copy(source, destination);
+            
         } catch (Exception e) {
-            logger.error("Failed to capture screenshot: " + e.getMessage());
+            System.out.println("Exception while taking screenshot: " + e.getMessage());
         }
     }
 
