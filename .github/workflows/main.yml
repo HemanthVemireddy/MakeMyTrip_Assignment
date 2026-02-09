@@ -1,4 +1,4 @@
-name: Selenium Java CI
+name: Selenium Java github CI CD
 
 on:
   push:
