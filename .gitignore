@@ -9,3 +9,4 @@ target/
 # Other system files
 .DS_Store
 Thumbs.db
+bin/
