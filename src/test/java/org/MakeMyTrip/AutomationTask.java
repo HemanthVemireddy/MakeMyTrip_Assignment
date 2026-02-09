@@ -1,6 +1,8 @@
 package org.MakeMyTrip;
 
 import java.time.Duration;
+import java.util.Collections;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.*;
@@ -18,20 +20,30 @@ public class AutomationTask extends ReusableUtility {
     
     @BeforeTest
     public void setUp() {
-    	logger.info("Starting MakeMyTrip Automation Script...");
+        logger.info("Starting MakeMyTrip Automation Script...");
+        
+        // Clean up old reports and screenshots before starting
+        cleanupOldReports();
+
         options = new ChromeOptions();
-        options.setExperimentalOption("excludeSwitches", new String[]{"enable-automation"});
+        
+        // 1. Standard Stealth Arguments
+        options.setExperimentalOption("excludeSwitches", Collections.singletonList("enable-automation"));
         options.setExperimentalOption("useAutomationExtension", false);
-        options.addArguments("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36");
+        options.addArguments("--disable-blink-features=AutomationControlled");
+        options.addArguments("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36");
         options.addArguments("--disable-notifications");
         options.addArguments("--start-maximized");
-        options.addArguments("--disable-blink-features=AutomationControlled");
-
         options.addArguments("--incognito");
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
 
         driver = new ChromeDriver(options);
+
+        // 2. THE STEALTH FIX: Use CDP to set 'navigator.webdriver' to undefined
+        // This is the most effective way to bypass modern bot detection
+        ((ChromeDriver) driver).executeCdpCommand("Page.addScriptToEvaluateOnNewDocument", 
+            Collections.singletonMap("source", "Object.defineProperty(navigator, 'webdriver', {get: () => undefined})"));
 
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(60));
@@ -40,10 +52,10 @@ public class AutomationTask extends ReusableUtility {
         wait = new WebDriverWait(driver, Duration.ofSeconds(30));
         js = (JavascriptExecutor) driver;
 
-        logger.info("Step 1 : Opening MakeMyTrip website...");
+        logger.info("Step 1: Opening MakeMyTrip website...");
         driver.get("https://www.makemytrip.com/");
 
-        System.out.println("Browser launched and application opened");
+        System.out.println("Browser launched with Stealth mode and application opened");
     }
 
     @Test

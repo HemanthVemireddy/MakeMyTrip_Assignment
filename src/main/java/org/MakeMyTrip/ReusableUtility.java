@@ -143,11 +143,17 @@ public class ReusableUtility
     public static void clickSearch() {
         try {
             WebElement searchBtn = wait.until(ExpectedConditions.elementToBeClickable(By.id("hsw_search_button")));
+            js.executeScript("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", searchBtn);
+           
+            long randomWait = 1500 + (long)(Math.random() * 1500);
+            Thread.sleep(randomWait); 
+           
             js.executeScript("arguments[0].click();", searchBtn);
-        } 
-        catch (Exception e) {
-        	 captureScreenshot(driver,"Search button click failed");
-            throw new RuntimeException("Search button click failed");
+            logger.info("Search button clicked with randomized delay.");
+            
+        } catch (Exception e) {
+            captureScreenshot(driver, "Search_Failure");
+            throw new RuntimeException("Final search attempt failed", e);
         }
     }
     
@@ -278,23 +284,34 @@ public class ReusableUtility
 
     public static void captureScreenshot(WebDriver driver, String screenshotName) {
         try {
-            // 1. Define the directory path
             File directory = new File("./Screenshots/");
-            
-            // 2. Check if it exists, if not, create it
             if (!directory.exists()) {
                 directory.mkdirs(); 
             }
 
-            // 3. Proceed with capturing the screenshot
             TakesScreenshot ts = (TakesScreenshot) driver;
             File source = ts.getScreenshotAs(OutputType.FILE);
-            File destination = new File(directory, screenshotName + ".png");
-            Files.copy(source, destination);
             
+            String time = new java.text.SimpleDateFormat("HHmmss").format(new java.util.Date());
+            File destination = new File(directory, screenshotName + "_" + time + ".png");
+            
+            com.google.common.io.Files.copy(source, destination);
         } catch (Exception e) {
-            System.out.println("Exception while taking screenshot: " + e.getMessage());
+            logger.error("Exception while taking screenshot: " + e.getMessage());
         }
     }
-
+   
+    public static void cleanupOldReports() {
+        String[] directories = {"./Screenshots", "./allure-results", "./test-output"};
+        for (String path : directories) {
+            File folder = new File(path);
+            if (folder.exists()) {
+                File[] files = folder.listFiles();
+                if (files != null) {
+                    for (File f : files) f.delete();
+                }
+                logger.info("Cleaned: " + path);
+            }
+        }
+    }
 }
