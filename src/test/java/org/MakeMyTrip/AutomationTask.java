@@ -73,16 +73,15 @@ public class AutomationTask extends ReusableUtility {
         clickSearch();
 
         logger.info("Step 9 : Fetching total number of available buses...");
-        GetTotalNumberofHotels(wait);
+        GetTotalNumberofHotels(wait,"Mumbai");
         
         logger.info("Step 10 : Getting names of all available Hotels...");
         GetAllHotelNames(driver, wait, js);
     	}
     	catch (Exception e) {
-            // This will capture the screen ONLY if the test fails
             captureScreenshot("Failure_During_Execution");
             logger.error("Test Failed! Screenshot captured.");
-            throw e; // This ensures TestNG still marks the test as 'Failed'
+            throw e; 
         }
 
        }

@@ -36,10 +36,13 @@ public class ReusableUtility
             if (isDisplayed) {
                 ClickcrossIcon.click();
                 logger.info("Pop up found and  closed");
+                captureScreenshot("Pop up found and  closed");
             } else {
             	logger.info("Pop up not found");
+            	captureScreenshot("Pop up not found");
             }
         } catch (TimeoutException e) {
+        	captureScreenshot("Popup_Not_Found");
         	logger.info("Pop up not shown the screen!!!");
         }
     }
@@ -53,10 +56,13 @@ public class ReusableUtility
                 WebElement minimizeBtn = wait.until(ExpectedConditions.elementToBeClickable(minimizeLocator));
                 minimizeBtn.click();
                 logger.info("Myra Bot found and minimized.");
+                captureScreenshot("Myra Bot found and minimized.");
             } else {
                 logger.info("Myra Bot not found on this page, skipping.");
+                captureScreenshot("Myra Bot not found on this page, skipping.");
             }
         } catch (Exception e) {
+        	captureScreenshot("Popup_Not_Found");
             logger.info("Myra Bot appeared but could not be clicked: " + e.getMessage());
         }
     }
@@ -64,6 +70,7 @@ public class ReusableUtility
     public static void clickMenuHotel()
     {
     	logger.info("Click Hotel Menu");
+    	captureScreenshot("Click Hotel Menu");
     	String MenuHotelButtonLocator = "//li[@class=\"menu_Hotels\"]";
     	By MenuHotel = By.xpath(MenuHotelButtonLocator);
     	WebElement HotelMenuButton = wait.until(ExpectedConditions.elementToBeClickable(MenuHotel));
@@ -114,12 +121,13 @@ public class ReusableUtility
 
                     js.executeScript("arguments[0].scrollIntoView(true);", row);
                     js.executeScript("arguments[0].click();", row);
-
+                    captureScreenshot("Selected main Mumbai city");
                     logger.info("Selected main Mumbai city");
                     return;
                 }
 
             } catch (NoSuchElementException e) {
+            	 captureScreenshot("Skipping invalid autosuggestion row");
                 logger.warn("Skipping invalid autosuggestion row");
             }
         }
@@ -135,6 +143,7 @@ public class ReusableUtility
             js.executeScript("arguments[0].click();", searchBtn);
         } 
         catch (Exception e) {
+        	 captureScreenshot("Search button click failed");
             throw new RuntimeException("Search button click failed");
         }
     }
@@ -150,8 +159,10 @@ public class ReusableUtility
 
             wait.until(ExpectedConditions.invisibilityOfElementLocated(calendar));
             logger.info("Calendar closed by clicking Hotels header");
+            captureScreenshot("Calendar not visible");
 
         } catch (TimeoutException e) {
+        	captureScreenshot("Calendar not visible");
         	logger.info("Calendar not visible");
         }
     }
@@ -163,13 +174,15 @@ public class ReusableUtility
                     .sendKeys(Keys.ESCAPE)
                     .perform();
             logger.info("Calendar closed using ESC");
+            captureScreenshot("Calendar not open");
         } catch (Exception e) {
+        	captureScreenshot("Calendar not open");
         	logger.info("Calendar not open");
         }
     }
     
     
-    public static void GetTotalNumberofHotels(WebDriverWait wait) {
+    public static void GetTotalNumberofHotels(WebDriverWait wait, String city) {
         try {
             By AvailabulHotelNumber = By.xpath("//div[@id=\"seoH1DontRemoveContainer\"]//h1");
 
@@ -177,14 +190,18 @@ public class ReusableUtility
             String text = getValue.getText();
             logger.info("Subtitle Text: " + text);
 
-            if (text.toLowerCase().contains("Mumbai")) {
+            if (text.toLowerCase().contains(city)) {
+            	captureScreenshot("Total Hotels Found:");
                 logger.info("Total Hotels Found: " + text);
             } else {
+            	captureScreenshot("Unexpected subtitle text");
                 logger.warn("Unexpected subtitle text: " + text);
             }
         } catch (TimeoutException e) {
+        	captureScreenshot("Timeout while waiting for subtitle text about Hotels");
             logger.error("Timeout while waiting for subtitle text about Hotels.", e);
         } catch (Exception e) {
+        	captureScreenshot("Unexpected error occurred in GetTotalNumberofHotels()");
             logger.error("Unexpected error occurred in GetTotalNumberofHotels()", e);
         }
     }
@@ -202,11 +219,13 @@ public class ReusableUtility
 
                 // End-of-list check
                 if (!wd.findElements(endOfListLocator).isEmpty()) {
-                    logger.info("Reached end of hotel list");
+                	captureScreenshot("Reached end of hotel list");
+                	logger.info("Reached end of hotel list");
                     break;
                 }
 
                 if (currentList.size() < 3) {
+                	captureScreenshot("Not enough hotel cards to scroll further");
                     logger.warn("Not enough hotel cards to scroll further");
                     break;
                 }
@@ -239,14 +258,17 @@ public class ReusableUtility
 
         } catch (TimeoutException e) {
             logger.error("Timed out while loading hotel listings", e);
+            captureScreenshot("Failure_During_Hotel list did not load in time");
             throw new RuntimeException("Hotel list did not load in time", e);
 
         } catch (InterruptedException e) {
             logger.error("Thread interrupted during scrolling", e);
+            captureScreenshot("Failure_During_scrolling");
             Thread.currentThread().interrupt();
 
         } catch (Exception e) {
             logger.error("Unexpected error while fetching hotel names", e);
+            captureScreenshot("Failure_During_scrolling");
             throw new RuntimeException("Failed to fetch hotel names", e);
         }
     }

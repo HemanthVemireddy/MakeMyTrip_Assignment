@@ -13,3 +13,9 @@ bin/
 
 .mvn/
 test-output/
+
+# Ensure target and bin are ignored
+target/
+bin/
+# Optional: ignore local screenshots if you only want CI/CD ones
+# Screenshots/
