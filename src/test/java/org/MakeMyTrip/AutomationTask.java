@@ -48,6 +48,8 @@ public class AutomationTask extends ReusableUtility {
 
     @Test
        public void RunTest() {
+    	
+    	try {
    
         logger.info("Step 2 : Closeing popup...");
         closePopUp();
@@ -75,6 +77,13 @@ public class AutomationTask extends ReusableUtility {
         
         logger.info("Step 10 : Getting names of all available Hotels...");
         GetAllHotelNames(driver, wait, js);
+    	}
+    	catch (Exception e) {
+            // This will capture the screen ONLY if the test fails
+            captureScreenshot("Failure_During_Execution");
+            logger.error("Test Failed! Screenshot captured.");
+            throw e; // This ensures TestNG still marks the test as 'Failed'
+        }
 
        }
     

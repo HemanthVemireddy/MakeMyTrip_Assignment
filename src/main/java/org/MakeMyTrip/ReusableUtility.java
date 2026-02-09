@@ -1,5 +1,6 @@
 package org.MakeMyTrip;
 
+import java.io.File;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -8,6 +9,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -21,6 +24,7 @@ public class ReusableUtility
     public static WebDriver driver;
     public static WebDriverWait wait;
     public static JavascriptExecutor js;
+    public static TakesScreenshot ts;
 	
     public static void closePopUp() {
         try {
@@ -247,5 +251,17 @@ public class ReusableUtility
         }
     }
 
+    public static void captureScreenshot(String testName) {
+        try {
+            TakesScreenshot ts = (TakesScreenshot) driver;
+            File source = ts.getScreenshotAs(OutputType.FILE);
+            String timestamp = new java.text.SimpleDateFormat("yyyyMMdd_HHmmss").format(new java.util.Date());
+            File destination = new File("./Screenshots/" + testName + "_" + timestamp + ".png");
+            com.google.common.io.Files.copy(source, destination);
+            logger.info("Screenshot captured: " + destination.getName());
+        } catch (Exception e) {
+            logger.error("Failed to capture screenshot: " + e.getMessage());
+        }
+    }
 
 }
