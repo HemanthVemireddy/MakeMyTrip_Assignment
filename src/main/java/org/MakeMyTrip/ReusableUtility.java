@@ -42,13 +42,18 @@ public class ReusableUtility
     
     public static void minimizeMyraBot() {
         try {
-            
             By minimizeLocator = By.xpath("//img[@alt='minimize']/parent::div");
-            WebElement minimizeBtn = wait.until(ExpectedConditions.elementToBeClickable(minimizeLocator));
-            minimizeBtn.click();
-            logger.info("Myra Bot minimized successfully.");
+            
+            // We check if the element exists in the DOM first
+            if (driver.findElements(minimizeLocator).size() > 0) {
+                WebElement minimizeBtn = wait.until(ExpectedConditions.elementToBeClickable(minimizeLocator));
+                minimizeBtn.click();
+                logger.info("Myra Bot found and minimized.");
+            } else {
+                logger.info("Myra Bot not found on this page, skipping.");
+            }
         } catch (Exception e) {
-            logger.info("Myra minimize button not found or already minimized.");
+            logger.info("Myra Bot appeared but could not be clicked: " + e.getMessage());
         }
     }
     
