@@ -10,3 +10,6 @@ target/
 .DS_Store
 Thumbs.db
 bin/
+
+.mvn/
+test-output/
