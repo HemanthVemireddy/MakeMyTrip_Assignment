@@ -40,6 +40,17 @@ public class ReusableUtility
         }
     }
     
+    public static void minimizeMyraBot() {
+        try {
+            
+            By minimizeLocator = By.xpath("//img[@alt='minimize']/parent::div");
+            WebElement minimizeBtn = wait.until(ExpectedConditions.elementToBeClickable(minimizeLocator));
+            minimizeBtn.click();
+            logger.info("Myra Bot minimized successfully.");
+        } catch (Exception e) {
+            logger.info("Myra minimize button not found or already minimized.");
+        }
+    }
     
     public static void clickMenuHotel()
     {
