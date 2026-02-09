@@ -22,6 +22,9 @@ public class AutomationTask extends ReusableUtility {
         options = new ChromeOptions();
         options.addArguments("--disable-notifications");
         options.addArguments("--start-maximized");
+        options.addArguments("--headless=new");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
 
         driver = new ChromeDriver(options);
 
