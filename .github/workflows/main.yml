@@ -23,3 +23,12 @@ jobs:
 
     - name: Build and Run Tests with Maven
       run: mvn clean test
+
+    - name: Upload Test Reports
+      if: always() # This ensures reports are saved even if a test fails
+      uses: actions/upload-artifact@v4
+      with:
+        name: automation-reports
+        path: |
+          target/surefire-reports/
+          allure-results/
