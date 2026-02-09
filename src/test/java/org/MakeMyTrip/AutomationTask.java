@@ -61,10 +61,10 @@ public class AutomationTask extends ReusableUtility {
         minimizeMyraBot();
         
         logger.info("Step 5 : Search city...");
-        clickAndSearchCity(driver, "Kurnool");
+        clickAndSearchCity(driver, "Mumbai");
         
         logger.info("Step 6 : Select City...");
-        selectMainCity(driver, wait, js, "Kurnool","City in Andhra Pradesh");
+        selectMainCity(driver, wait, js, "Mumbai","City in Maharashtra");
         
         logger.info("Step 7 : Close calender...");
         closeCalendarUsingESC();
@@ -73,7 +73,7 @@ public class AutomationTask extends ReusableUtility {
         clickSearch();
 
         logger.info("Step 9 : Fetching total number of available buses...");
-        GetTotalNumberofHotels(wait,"Kurnool");
+        GetTotalNumberofHotels(wait,"Mumbai");
         
         logger.info("Step 10 : Getting names of all available Hotels...");
         GetAllHotelNames(driver, wait, js);
