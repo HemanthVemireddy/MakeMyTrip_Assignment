@@ -17,5 +17,4 @@
             <class name="org.MakeMyTrip.AutomationTask_MakeMyTrip" />
         </classes>
     </test>
-    
 </suite>
