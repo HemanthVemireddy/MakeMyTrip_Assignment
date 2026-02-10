@@ -13,11 +13,9 @@ import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-public class AutomationTask extends ReusableUtility {
-	private static final Logger logger = LogManager.getLogger(AutomationTask.class);
-    public static ChromeOptions options;
-    
-    
+public class AutomationTask_MakeMyTrip extends ReusableUtility {
+	private static final Logger logger = LogManager.getLogger(AutomationTask_MakeMyTrip.class);
+      
     @BeforeTest
     public void setUp() {
         logger.info("Starting MakeMyTrip Automation Script...");
@@ -40,8 +38,6 @@ public class AutomationTask extends ReusableUtility {
 
         driver = new ChromeDriver(options);
 
-        // 2. THE STEALTH FIX: Use CDP to set 'navigator.webdriver' to undefined
-        // This is the most effective way to bypass modern bot detection
         ((ChromeDriver) driver).executeCdpCommand("Page.addScriptToEvaluateOnNewDocument", 
             Collections.singletonMap("source", "Object.defineProperty(navigator, 'webdriver', {get: () => undefined})"));
 
@@ -63,6 +59,9 @@ public class AutomationTask extends ReusableUtility {
     	
     	try {
    
+    	logger.info("Step 1 : Log validate...");
+    	checkLogo();
+    	
         logger.info("Step 2 : Closeing popup...");
         closePopUp();
         
