@@ -78,7 +78,7 @@ public class AutomationTask_Ditto extends DittoUtility {
             fillPrimaryDetails("27", "500032"); 
             
             // 8. Adjust Coverage and Calculate
-            moveSliderToOneCr("10000000");
+            //moveSliderToOneCr("10000000");
             
             // 9. calculate total premium 
             clickCalculate();

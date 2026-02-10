@@ -1,0 +1,12 @@
+2026-02-10 18:41:27 [main] INFO  org.ditto.AutomationTask_Ditto - Initializing Browser for Ditto Automation...
+2026-02-10 18:41:28 [main] INFO  org.ditto.AutomationTask_Ditto - Navigating to Ditto App...
+2026-02-10 18:41:29 [main] INFO  org.MakeMyTrip.BaseUtility - Clicked on element: By.xpath: //span[text()='Get started']
+2026-02-10 18:41:30 [main] INFO  org.MakeMyTrip.BaseUtility - Clicked on element: By.xpath: //span[text()='Next' or text()='Next step']
+2026-02-10 18:41:30 [main] INFO  org.MakeMyTrip.BaseUtility - Clicked on element: By.xpath: //span[text()='Next' or text()='Next step']
+2026-02-10 18:41:30 [main] INFO  org.MakeMyTrip.BaseUtility - Clicked on element: By.xpath: //span[text()='Next' or text()='Next step']
+2026-02-10 18:41:34 [main] INFO  org.MakeMyTrip.BaseUtility - Clicked on element: By.xpath: //span[text()='Continue']
+2026-02-10 18:41:34 [main] INFO  org.MakeMyTrip.BaseUtility - Clicked on element: By.xpath: //span[text()='Self']
+2026-02-10 18:41:34 [main] INFO  org.MakeMyTrip.BaseUtility - Clicked on element: By.xpath: //span[text()='Self']/following::div[text()='Male'][1]
+2026-02-10 18:41:34 [main] INFO  org.MakeMyTrip.BaseUtility - Clicked on element: By.xpath: //span[text()='Next' or text()='Next step']
+2026-02-10 18:41:45 [main] INFO  org.MakeMyTrip.BaseUtility - Starting Plan Details Validation...
+2026-02-10 18:41:48 [main] INFO  org.ditto.AutomationTask_Ditto - Browser session closed.
