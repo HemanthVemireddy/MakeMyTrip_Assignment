@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Full Automation Suite">
+    
+    <listeners>
+        <listener class-name="org.MakeMyTrip.Listeners" />
+    </listeners>
+
+    <test name="Insurance Tests">
+        <classes>
+            <class name="org.ditto.AutomationTask_Ditto" />
+        </classes>
+    </test>
+    
+    <test name="Hotel Tests">
+        <classes>
+            <class name="org.MakeMyTrip.AutomationTask_MakeMyTrip" />
+        </classes>
+    </test>
+    
+</suite>

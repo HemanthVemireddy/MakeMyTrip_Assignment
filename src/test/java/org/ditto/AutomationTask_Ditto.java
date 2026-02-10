@@ -27,7 +27,6 @@ public class AutomationTask_Ditto extends DittoUtility {
         logger.info("Initializing Browser for Ditto Automation...");
         options = new ChromeOptions();
 
-        // Standard Stealth Arguments to avoid bot detection
         options.setExperimentalOption("excludeSwitches", Collections.singletonList("enable-automation"));
         options.setExperimentalOption("useAutomationExtension", false);
         options.addArguments("--disable-blink-features=AutomationControlled");

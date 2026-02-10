@@ -19,20 +19,20 @@ public class AutomationTask_MakeMyTrip extends MMTUtility {
     @BeforeTest
     public void setUp() {
         logger.info("Starting MakeMyTrip Automation Script...");
-        
         cleanupOldReports();
-
-        options = new ChromeOptions();
+        BaseUtility.initializeOptions();
         
         options.setExperimentalOption("excludeSwitches", Collections.singletonList("enable-automation"));
         options.setExperimentalOption("useAutomationExtension", false);
         options.addArguments("--disable-blink-features=AutomationControlled");
+       
         options.addArguments("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36");
+        
         options.addArguments("--disable-notifications");
         options.addArguments("--start-maximized");
         options.addArguments("--incognito");
-
         driver = new ChromeDriver(options);
+
         ((ChromeDriver) driver).executeCdpCommand("Page.addScriptToEvaluateOnNewDocument", 
             Collections.singletonMap("source", "Object.defineProperty(navigator, 'webdriver', {get: () => undefined})"));
 
@@ -43,10 +43,9 @@ public class AutomationTask_MakeMyTrip extends MMTUtility {
         wait = new WebDriverWait(driver, Duration.ofSeconds(30));
         js = (JavascriptExecutor) driver;
 
-        logger.info("Step 1: Opening MakeMyTrip website...");
+        logger.info("Step 1: Navigating to MakeMyTrip...");
         driver.get("https://www.makemytrip.com/");
     }
-
     @Test
     public void RunTest() {
         try {
